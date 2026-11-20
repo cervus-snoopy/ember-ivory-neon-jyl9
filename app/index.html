@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vice Cover Studio — GTA-style multi-panel cover maker</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<main class="app">
+  <section class="controls" aria-label="Cover controls">
+    <header>
+      <h1>Vice Cover Studio</h1>
+      <p>Your photo, four slanted panels, one sunset poster. Pick a photo, write the title, export the PNG.</p>
+    </header>
+
+    <fieldset>
+      <legend>1 · Size</legend>
+      <div class="row" id="size-buttons">
+        <button type="button" data-size="1920x1080" class="active">1920 × 1080</button>
+        <button type="button" data-size="1080x1350">1080 × 1350</button>
+        <button type="button" data-size="1080x1080">1080 × 1080</button>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>2 · Colour grade</legend>
+      <div class="row" id="grade-buttons">
+        <button type="button" data-grade="sunset" class="active">🌇 Sunset</button>
+        <button type="button" data-grade="neon">🌃 Neon Night</button>
+        <button type="button" data-grade="gold">🌆 Twilight Gold</button>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>3 · Panels — click a panel, then crop it</legend>
+      <div class="row" id="panel-buttons">
+        <button type="button" class="active">Panel 1</button>
+        <button type="button">Panel 2</button>
+        <button type="button">Panel 3</button>
+        <button type="button">Panel 4</button>
+      </div>
+      <p class="hint" id="panel-label">Panel 1 of 4</p>
+      <label>Photo for this panel
+        <select id="photo-select">
+          <option value="pier">Sample — The Pier</option>
+          <option value="boulevard">Sample — Palm Boulevard</option>
+          <option value="__upload__">Upload your own photo…</option>
+        </select>
+      </label>
+      <input id="upload-input" type="file" accept="image/*" hidden>
+      <div class="thumbs">
+        <button type="button" id="sample-pier"><img src="samples/pier.jpg" alt="Sample photo: the pier at sunset">Pier</button>
+        <button type="button" id="sample-boulevard"><img src="samples/boulevard.jpg" alt="Sample photo: palm boulevard">Boulevard</button>
+      </div>
+      <label>Zoom <span id="zoom-out">1.18x</span>
+        <input id="zoom" type="range" min="1" max="3" step="0.01" value="1.18">
+      </label>
+      <p class="hint">Drag the photo on the preview to move it. Scroll over a panel to zoom it.</p>
+      <button type="button" id="reset-crop" class="ghost">Reset this panel's crop</button>
+    </fieldset>
+
+    <fieldset>
+      <legend>4 · Lettering</legend>
+      <label>Title
+        <input id="title" type="text" maxlength="24" value="VICE CITY">
+      </label>
+      <label>Subtitle
+        <input id="subtitle" type="text" maxlength="40" value="One last score">
+      </label>
+      <label>Billing block
+        <input id="billing" type="text" maxlength="120" value="Palmlines Pictures presents  •  A story of sun, sand and stolen gold">
+      </label>
+      <label>Seal text
+        <input id="seal-text" type="text" maxlength="24" value="Vice • Est. 2026">
+      </label>
+      <div class="callouts">
+        <label>Callout 1 <input id="callout-0" type="text" maxlength="20" value="Palm Boulevard"></label>
+        <label>Callout 2 <input id="callout-1" type="text" maxlength="20" value="The Pier"></label>
+        <label>Callout 3 <input id="callout-2" type="text" maxlength="20" value="Neon Nights"></label>
+      </div>
+      <label class="check"><input id="grain" type="checkbox" checked> Poster Ink — grain</label>
+      <label class="check"><input id="vignette" type="checkbox" checked> Vignette</label>
+    </fieldset>
+
+    <fieldset>
+      <legend>5 · Export PNG</legend>
+      <div class="row export" id="export-buttons">
+        <button type="button" data-size="1920x1080">1920 × 1080</button>
+        <button type="button" data-size="1080x1350">1080 × 1350</button>
+        <button type="button" data-size="1080x1080">1080 × 1080</button>
+      </div>
+      <p id="status" role="status"></p>
+    </fieldset>
+  </section>
+
+  <section class="preview" aria-label="Live cover preview">
+    <canvas id="cover" width="1920" height="1080" aria-label="The cover, live preview"></canvas>
+  </section>
+</main>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
