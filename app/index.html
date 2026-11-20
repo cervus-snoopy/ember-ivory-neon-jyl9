@@ -1,104 +1,177 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Vice Cover Studio — GTA-style multi-panel cover maker</title>
-<link rel="icon" href="data:,">
-<link rel="stylesheet" href="./style.css">
+<meta name="description" content="Vice Cover Studio turns your photos and a caption into a four-panel sunset cover in the style of a Vice City poster, exported as a PNG.">
+<link rel="stylesheet" href="style.css">
 </head>
-<body>
-<main class="app">
-  <section class="controls" aria-label="Cover controls">
-    <header>
-      <h1>Vice Cover Studio</h1>
-      <p>Your photo, four slanted panels, one sunset poster. Pick a photo, write the title, export the PNG.</p>
-    </header>
+<body data-grade="sunset" data-size="1080x1080">
+<header class="topbar" id="topbar">
+  <div class="brand" id="brand">
+    <span class="brand-sun" aria-hidden="true"></span>
+    <span class="brand-name">VICE COVER <b>STUDIO</b></span>
+    <span class="brand-tag">four-panel sunset cover maker</span>
+  </div>
+  <div class="top-controls" id="topControls">
+    <div class="grade-switch" id="gradeSwitch" role="group" aria-label="Colour grade">
+      <button type="button" class="grade-btn is-active" data-grade="sunset">Sunset</button>
+      <button type="button" class="grade-btn" data-grade="neon">Neon Night</button>
+      <button type="button" class="grade-btn" data-grade="gold">Twilight Gold</button>
+    </div>
+    <div class="size-switch" id="sizeSwitch" role="group" aria-label="Export size">
+      <button type="button" class="size-btn is-active" data-size="1080x1080">1080 &times; 1080</button>
+      <button type="button" class="size-btn" data-size="1080x1350">1080 &times; 1350</button>
+      <button type="button" class="size-btn" data-size="1920x1080">1920 &times; 1080</button>
+    </div>
+    <button type="button" class="export-btn" id="exportBtn">Export PNG</button>
+  </div>
+</header>
 
-    <fieldset>
-      <legend>1 · Size</legend>
-      <div class="row" id="size-buttons">
-        <button type="button" data-size="1920x1080" class="active">1920 × 1080</button>
-        <button type="button" data-size="1080x1350">1080 × 1350</button>
-        <button type="button" data-size="1080x1080">1080 × 1080</button>
+<main class="workspace" id="workspace">
+  <section class="stage-column" id="stageColumn" aria-label="Cover preview">
+    <div class="cover-frame" id="coverFrame">
+      <div class="cover" id="cover" data-panels="4">
+        <div class="cover-sky" id="coverSky" aria-hidden="true">
+          <span class="sky-sun" id="skySun"></span>
+          <span class="sky-glow" id="skyGlow"></span>
+          <svg class="skyline" id="skyline" viewBox="0 0 1200 140" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0 140 V90 h40 V60 h30 V95 h25 V40 h35 V100 h30 V70 h45 V110 h20 V55 h40 V95 h35 V30 h30 V105 h40 V65 h35 V100 h30 V45 h45 V110 h25 V75 h40 V100 h30 V50 h35 V105 h40 V70 h30 V100 h45 V60 h35 V110 h30 V80 h40 V100 h35 V55 h30 V105 h40 V140 Z"></path>
+          </svg>
+        </div>
+        <div class="cover-panels" id="coverPanels">
+          <article class="panel" id="panel-0" data-panel="0">
+            <div class="panel-inner" id="panelInner-0">
+              <div class="panel-art" id="panelArt-0"></div>
+              <div class="panel-shade" aria-hidden="true"></div>
+              <p class="panel-caption" id="panelCaption-0">Ocean Drive</p>
+            </div>
+          </article>
+          <article class="panel" id="panel-1" data-panel="1">
+            <div class="panel-inner" id="panelInner-1">
+              <div class="panel-art" id="panelArt-1"></div>
+              <div class="panel-shade" aria-hidden="true"></div>
+              <p class="panel-caption" id="panelCaption-1">Neon Nights</p>
+            </div>
+          </article>
+          <article class="panel" id="panel-2" data-panel="2">
+            <div class="panel-inner" id="panelInner-2">
+              <div class="panel-art" id="panelArt-2"></div>
+              <div class="panel-shade" aria-hidden="true"></div>
+              <p class="panel-caption" id="panelCaption-2">Palm Highway</p>
+            </div>
+          </article>
+          <article class="panel" id="panel-3" data-panel="3">
+            <div class="panel-inner" id="panelInner-3">
+              <div class="panel-art" id="panelArt-3"></div>
+              <div class="panel-shade" aria-hidden="true"></div>
+              <p class="panel-caption" id="panelCaption-3">Skyline Run</p>
+            </div>
+          </article>
+        </div>
+        <h1 class="cover-title" id="coverTitle">VICE COVER</h1>
+        <p class="cover-subtitle" id="coverSubtitle">WELCOME TO THE SUNSET CITY &middot; A FOUR-PANEL POSTER</p>
+        <div class="cover-seal" id="coverSeal" aria-hidden="true">
+          <svg viewBox="0 0 120 120">
+            <defs>
+              <path id="sealCircle" d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0"></path>
+            </defs>
+            <circle cx="60" cy="60" r="57" class="seal-ring"></circle>
+            <circle cx="60" cy="60" r="34" class="seal-ring-inner"></circle>
+            <text class="seal-text"><textPath href="#sealCircle">VICE COVER STUDIO &middot; SUNSET CITY &middot; EST. 2026 &middot;</textPath></text>
+            <text x="60" y="55" class="seal-star">&#9733;</text>
+            <text x="60" y="76" class="seal-year">2026</text>
+          </svg>
+        </div>
+        <div class="callouts" id="callouts" aria-hidden="true">
+          <span class="callout callout-a" id="calloutA"><i>01</i> Golden-hour grade</span>
+          <span class="callout callout-b" id="calloutB"><i>02</i> Four-panel slant</span>
+          <span class="callout callout-c" id="calloutC"><i>03</i> Retro-chrome title</span>
+        </div>
+        <p class="cover-billing" id="coverBilling">A VICE COVER STUDIO ORIGINAL &nbsp;&middot;&nbsp; STARRING YOU &nbsp;&middot;&nbsp; MUSIC BY THE NEON PALMS &nbsp;&middot;&nbsp; SHOT ON THE SUNSET STRIP &nbsp;&middot;&nbsp; NO PALMS WERE HARMED</p>
+        <div class="cover-grain" aria-hidden="true"></div>
+        <div class="cover-vignette" aria-hidden="true"></div>
       </div>
-    </fieldset>
-
-    <fieldset>
-      <legend>2 · Colour grade</legend>
-      <div class="row" id="grade-buttons">
-        <button type="button" data-grade="sunset" class="active">🌇 Sunset</button>
-        <button type="button" data-grade="neon">🌃 Neon Night</button>
-        <button type="button" data-grade="gold">🌆 Twilight Gold</button>
-      </div>
-    </fieldset>
-
-    <fieldset>
-      <legend>3 · Panels — click a panel, then crop it</legend>
-      <div class="row" id="panel-buttons">
-        <button type="button" class="active">Panel 1</button>
-        <button type="button">Panel 2</button>
-        <button type="button">Panel 3</button>
-        <button type="button">Panel 4</button>
-      </div>
-      <p class="hint" id="panel-label">Panel 1 of 4</p>
-      <label>Photo for this panel
-        <select id="photo-select">
-          <option value="pier">Sample — The Pier</option>
-          <option value="boulevard">Sample — Palm Boulevard</option>
-          <option value="__upload__">Upload your own photo…</option>
-        </select>
-      </label>
-      <input id="upload-input" type="file" accept="image/*" hidden>
-      <div class="thumbs">
-        <button type="button" id="sample-pier"><img src="samples/pier.jpg" alt="Sample photo: the pier at sunset">Pier</button>
-        <button type="button" id="sample-boulevard"><img src="samples/boulevard.jpg" alt="Sample photo: palm boulevard">Boulevard</button>
-      </div>
-      <label>Zoom <span id="zoom-out">1.18x</span>
-        <input id="zoom" type="range" min="1" max="3" step="0.01" value="1.18">
-      </label>
-      <p class="hint">Drag the photo on the preview to move it. Scroll over a panel to zoom it.</p>
-      <button type="button" id="reset-crop" class="ghost">Reset this panel's crop</button>
-    </fieldset>
-
-    <fieldset>
-      <legend>4 · Lettering</legend>
-      <label>Title
-        <input id="title" type="text" maxlength="24" value="VICE CITY">
-      </label>
-      <label>Subtitle
-        <input id="subtitle" type="text" maxlength="40" value="One last score">
-      </label>
-      <label>Billing block
-        <input id="billing" type="text" maxlength="120" value="Palmlines Pictures presents  •  A story of sun, sand and stolen gold">
-      </label>
-      <label>Seal text
-        <input id="seal-text" type="text" maxlength="24" value="Vice • Est. 2026">
-      </label>
-      <div class="callouts">
-        <label>Callout 1 <input id="callout-0" type="text" maxlength="20" value="Palm Boulevard"></label>
-        <label>Callout 2 <input id="callout-1" type="text" maxlength="20" value="The Pier"></label>
-        <label>Callout 3 <input id="callout-2" type="text" maxlength="20" value="Neon Nights"></label>
-      </div>
-      <label class="check"><input id="grain" type="checkbox" checked> Poster Ink — grain</label>
-      <label class="check"><input id="vignette" type="checkbox" checked> Vignette</label>
-    </fieldset>
-
-    <fieldset>
-      <legend>5 · Export PNG</legend>
-      <div class="row export" id="export-buttons">
-        <button type="button" data-size="1920x1080">1920 × 1080</button>
-        <button type="button" data-size="1080x1350">1080 × 1350</button>
-        <button type="button" data-size="1080x1080">1080 × 1080</button>
-      </div>
-      <p id="status" role="status"></p>
-    </fieldset>
+    </div>
+    <p class="stage-hint" id="stageHint">Drag a panel to move its photo &middot; use the sliders to zoom &middot; click Export PNG to download your cover.</p>
+    <div class="export-status" id="exportStatus" role="status" aria-live="polite"></div>
   </section>
 
-  <section class="preview" aria-label="Live cover preview">
-    <canvas id="cover" width="1920" height="1080" aria-label="The cover, live preview"></canvas>
-  </section>
+  <aside class="editor" id="editor" aria-label="Cover editor">
+    <section class="editor-block" id="photoBlock">
+      <h2>1 &middot; Your photos</h2>
+      <p class="editor-note">Load one photo per panel, or fill all four with the same shot. Photos never leave your machine.</p>
+      <div class="sample-strip" id="sampleStrip">
+        <button type="button" class="sample-thumb" data-sample="samples/scene-beach.jpg" data-label="Ocean Drive"><img src="samples/scene-beach.jpg" alt="Sample scene: beach at sunset" width="180" height="120"><span>Ocean Drive</span></button>
+        <button type="button" class="sample-thumb" data-sample="samples/scene-neon.jpg" data-label="Neon Nights"><img src="samples/scene-neon.jpg" alt="Sample scene: neon street at night" width="180" height="120"><span>Neon Nights</span></button>
+        <button type="button" class="sample-thumb" data-sample="samples/scene-highway.jpg" data-label="Palm Highway"><img src="samples/scene-highway.jpg" alt="Sample scene: palm highway" width="180" height="120"><span>Palm Highway</span></button>
+        <button type="button" class="sample-thumb" data-sample="samples/scene-skyline.jpg" data-label="Skyline Run"><img src="samples/scene-skyline.jpg" alt="Sample scene: city skyline" width="180" height="120"><span>Skyline Run</span></button>
+      </div>
+      <div class="editor-actions">
+        <button type="button" class="action-btn" id="loadSamplesBtn">Load sample photos</button>
+        <button type="button" class="action-btn action-btn-quiet" id="clearPhotosBtn">Clear photos</button>
+      </div>
+    </section>
+
+    <section class="editor-block" id="panelsBlock">
+      <h2>2 &middot; Panels &mdash; crop, position, caption</h2>
+      <div class="panel-card" id="panelCard-0">
+        <h3>Panel 1 &middot; <span class="panel-card-name">Ocean Drive</span></h3>
+        <label class="file-label">Photo <input type="file" accept="image/*" data-panel-file="0"></label>
+        <label>Zoom <input type="range" min="100" max="250" value="100" data-panel-zoom="0"><output data-panel-zoom-out="0">100%</output></label>
+        <label>Move left / right <input type="range" min="-50" max="50" value="0" data-panel-x="0"><output data-panel-x-out="0">0</output></label>
+        <label>Move up / down <input type="range" min="-50" max="50" value="0" data-panel-y="0"><output data-panel-y-out="0">0</output></label>
+        <label>Caption <input type="text" value="Ocean Drive" maxlength="24" data-panel-caption="0"></label>
+      </div>
+      <div class="panel-card" id="panelCard-1">
+        <h3>Panel 2 &middot; <span class="panel-card-name">Neon Nights</span></h3>
+        <label class="file-label">Photo <input type="file" accept="image/*" data-panel-file="1"></label>
+        <label>Zoom <input type="range" min="100" max="250" value="100" data-panel-zoom="1"><output data-panel-zoom-out="1">100%</output></label>
+        <label>Move left / right <input type="range" min="-50" max="50" value="0" data-panel-x="1"><output data-panel-x-out="1">0</output></label>
+        <label>Move up / down <input type="range" min="-50" max="50" value="0" data-panel-y="1"><output data-panel-y-out="1">0</output></label>
+        <label>Caption <input type="text" value="Neon Nights" maxlength="24" data-panel-caption="1"></label>
+      </div>
+      <div class="panel-card" id="panelCard-2">
+        <h3>Panel 3 &middot; <span class="panel-card-name">Palm Highway</span></h3>
+        <label class="file-label">Photo <input type="file" accept="image/*" data-panel-file="2"></label>
+        <label>Zoom <input type="range" min="100" max="250" value="100" data-panel-zoom="2"><output data-panel-zoom-out="2">100%</output></label>
+        <label>Move left / right <input type="range" min="-50" max="50" value="0" data-panel-x="2"><output data-panel-x-out="2">0</output></label>
+        <label>Move up / down <input type="range" min="-50" max="50" value="0" data-panel-y="2"><output data-panel-y-out="2">0</output></label>
+        <label>Caption <input type="text" value="Palm Highway" maxlength="24" data-panel-caption="2"></label>
+      </div>
+      <div class="panel-card" id="panelCard-3">
+        <h3>Panel 4 &middot; <span class="panel-card-name">Skyline Run</span></h3>
+        <label class="file-label">Photo <input type="file" accept="image/*" data-panel-file="3"></label>
+        <label>Zoom <input type="range" min="100" max="250" value="100" data-panel-zoom="3"><output data-panel-zoom-out="3">100%</output></label>
+        <label>Move left / right <input type="range" min="-50" max="50" value="0" data-panel-x="3"><output data-panel-x-out="3">0</output></label>
+        <label>Move up / down <input type="range" min="-50" max="50" value="0" data-panel-y="3"><output data-panel-y-out="3">0</output></label>
+        <label>Caption <input type="text" value="Skyline Run" maxlength="24" data-panel-caption="3"></label>
+      </div>
+    </section>
+
+    <section class="editor-block" id="wordsBlock">
+      <h2>3 &middot; Words on the poster</h2>
+      <label>Cover title <input type="text" id="titleInput" value="VICE COVER" maxlength="18"></label>
+      <label>Subtitle bar <input type="text" id="subtitleInput" value="WELCOME TO THE SUNSET CITY &middot; A FOUR-PANEL POSTER" maxlength="64"></label>
+      <label>Billing block <textarea id="billingInput" rows="2" maxlength="180">A VICE COVER STUDIO ORIGINAL &middot; STARRING YOU &middot; MUSIC BY THE NEON PALMS &middot; SHOT ON THE SUNSET STRIP &middot; NO PALMS WERE HARMED</textarea></label>
+    </section>
+
+    <section class="editor-block" id="exportBlock">
+      <h2>4 &middot; Export</h2>
+      <p class="editor-note">Pick a size up top, then export. The PNG is drawn on a canvas at full size &mdash; 1080 &times; 1080, 1080 &times; 1350 or 1920 &times; 1080.</p>
+      <button type="button" class="export-btn export-btn-big" id="exportBtn2">Export PNG</button>
+      <a class="download-link" id="downloadLink" href="#" download="vice-cover.png" hidden>Download your cover PNG</a>
+    </section>
+  </aside>
 </main>
+
+<footer class="page-foot" id="pageFoot">
+  <p>Vice Cover Studio &mdash; original art made with CSS, SVG and canvas. No Rockstar Games logos, artwork or fonts. Title font Anton, SIL Open Font License 1.1 (see app/fonts/OFL.txt). Works fully offline.</p>
+</footer>
+
+<canvas id="exportCanvas" width="1080" height="1080" hidden></canvas>
+<div id="selftest" hidden></div>
 <script type="module" src="./src/main.js"></script>
 </body>
 </html>
