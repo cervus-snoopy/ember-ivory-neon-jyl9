@@ -1,51 +1,47 @@
-[![gta6-cover-art-01](https://make.fun/badge/gta6-cover-art-01.svg)](https://make.fun/bounty/gta6-cover-art-01)
+[![make.fun](https://make.fun/badge/gta6-cover-art-01.svg)](https://make.fun/bounty/gta6-cover-art-01)
 [![rank](https://make.fun/badge/gta6-cover-art-01/cervus-snoopy/ember-ivory-neon-jyl9/rank.svg)](https://make.fun/bounty/gta6-cover-art-01)
 [![reward](https://make.fun/badge/gta6-cover-art-01/cervus-snoopy/ember-ivory-neon-jyl9/reward.svg)](https://make.fun/bounty/gta6-cover-art-01)
 
-# Vice Cover Studio — GTA-style multi-panel cover maker
+# Vice Cover Studio
 
-Turn a photo and a caption into a Vice City sunset poster, in your browser,
-offline, in three steps: pick a photo, write the title, export the PNG.
+A GTA-style multi-panel cover maker. Load your photos, crop and position each one in four slanted panels, edit the captions and the poster words, pick a colour grade — Sunset, Neon Night or Twilight Gold — and export a PNG to share in the common post sizes: 1080 × 1080, 1080 × 1350 and 1920 × 1080.
 
-[make.fun bounty: gta6-cover-art-01](https://make.fun/bounty/gta6-cover-art-01)
+## What it makes
 
-## What it does
+A four-panel sunset poster: a gradient sky with a sun disc and skyline, four skewed panels filled with your photos, a retro-chrome 3D title across the top, a subtitle bar, a circular seal stamp, three callout labels pointing at details, a billing block along the bottom, and poster-ink grain plus a vignette over everything.
 
-- **Multi-panel poster** — four panels with slanted, cut-sheet edges (hero panel
-  + three supporting panels), a different layout per export size.
-- **Any photo** — upload your own photo per panel, or use the two built-in
-  sample photos. Click a panel to select it, drag on the preview to move the
-  photo inside it, scroll to zoom, or use the zoom slider. Each panel crops
-  independently.
-- **Bold lettering over the art** — a retro-chrome 3D title with a forward lean
-  and hot top edge, a letter-spaced subtitle bar, a billing block, a round seal
-  badge, and three callout labels you can edit.
-- **Grades** — Sunset, Neon Night, and Twilight Gold, each with its own sky
-  wash, sun glow and chrome palette, plus a Poster Ink grain + vignette toggle.
-- **Fast export** — one click exports a PNG in 1920 × 1080, 1080 × 1350, or
-  1080 × 1080.
+## How to use it
 
-## Run it
+1. Serve the app — `node serve.ts` — and open http://localhost:8080.
+2. Photos: click a sample scene, or load your own photo into any panel with its file picker. Drag a panel to move its photo; the zoom and position sliders crop it precisely; the caption box renames it.
+3. Words: edit the cover title, the subtitle bar and the billing block in step 3 of the editor.
+4. Grade: Sunset, Neon Night or Twilight Gold, from the top bar.
+5. Export: pick a size (1080 × 1080, 1080 × 1350 or 1920 × 1080) and press Export PNG. The cover is drawn on a canvas at full size and downloaded as a PNG.
 
-```sh
-node serve.ts
-# open http://localhost:8080
-```
+Photos are read on your own machine and never uploaded. The app works fully offline: every script, style, image and font it loads is a file under `app/`.
 
-Plain static files under `app/` — no build step, no network request at runtime.
-The display font is Anton (SIL Open Font License, vendored under
-`app/fonts/` with its `OFL.txt`). The two sample photos under `app/samples/`
-were made with an image model for make.fun and are free to use. Photos you
-upload are read on your own machine and never sent anywhere.
+## Files
 
-No Rockstar Games logo, artwork, character, or font is used anywhere.
+- `app/index.html` — the page: top bar, cover stage, editor sidebar.
+- `app/style.css` — all of the look: grades as CSS variables, slanted panels, chrome title, seal, grain and vignette.
+- `app/src/main.js` — entry: starts the editor.
+- `app/src/editor.js` — state, panel controls, drag-to-pan, photo loading, export wiring, self-test.
+- `app/src/render.js` — canvas renderer: repaints the whole poster at export size.
+- `app/src/shots.js` — export sizes, grades, sample scenes and screenshot presets.
+- `app/samples/` — four sample scenes made for this entry (gradient + skyline art).
+- `app/fonts/Anton-Regular.ttf` — Anton, SIL Open Font License 1.1 (see `app/fonts/OFL.txt`).
+- `screenshots/` — the cover and the editor, rendered from this app.
+- `main.ts` — the entrypoint: copies `app/` and `screenshots/` to the output directory and writes `dossier.json`.
+- `serve.ts` — local static server for trying the app.
+- `vendor/makefun-app.ts` — make.fun's dossier library (the kit's copy, unchanged).
 
-## Screenshots
+## Originality
 
-- `screenshots/1-cover.jpg` — exported landscape cover (1920 × 1080)
-- `screenshots/2-editor.png` — the editor with a photo loaded
-- `screenshots/3-cover-portrait.jpg` — exported portrait cover (1080 × 1350)
-- `screenshots/4-cover-square.jpg` — exported square cover (1080 × 1080)
+All art is original CSS, SVG and canvas work made for this entry. No Rockstar Games logos, artwork, characters or fonts are used anywhere.
+
+## Competition
+
+Built for [make.fun's GTA 6 cover art bounty](https://make.fun/bounty/gta6-cover-art-01).
 
 ## License
 

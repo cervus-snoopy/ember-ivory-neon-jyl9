@@ -1,73 +1,62 @@
-// A tiny static server for app/ (Node 22, standard library only), so an entry can be tried
-// locally without a build step: `node serve.ts` serves app/ on http://localhost:8080.
-// It sends the MIME types an offline web app needs, refuses any path outside app/, and otherwise
-// does nothing clever: this is a development convenience, not a web server for the internet.
-import { createReadStream, statSync } from 'node:fs';
+/* Vice Cover Studio — local static server for trying the app.
+ *
+ * Serves app/ at http://localhost:8080 with no network requests of its own:
+ *
+ *   node serve.ts
+ *
+ * Standard library only, no install. The port can be changed with PORT.
+ * Only files under app/ are served; anything else is a 404.
+ */
+
+import { createReadStream, existsSync, statSync } from 'node:fs';
 import { createServer } from 'node:http';
-import { extname, join, normalize, resolve, sep } from 'node:path';
+import { dirname, extname, join, normalize, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const root = resolve(fileURLToPath(new URL('./app', import.meta.url)));
-const args = process.argv.slice(2);
-const portIndex = args.indexOf('--port');
-const requested = portIndex === -1 ? 8080 : Number(args[portIndex + 1]);
-const port = Number.isInteger(requested) && requested > 0 && requested < 65536 ? requested : 8080;
-
-const MIME: Record<string, string> = {
+/** Content types for the files the app serves. */
+const MIME_TYPES: Record<string, string> = {
   '.html': 'text/html; charset=utf-8',
+  '.css': 'text/css; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8',
   '.mjs': 'text/javascript; charset=utf-8',
-  '.css': 'text/css; charset=utf-8',
   '.json': 'application/json; charset=utf-8',
   '.png': 'image/png',
   '.jpg': 'image/jpeg',
   '.jpeg': 'image/jpeg',
-  '.gif': 'image/gif',
-  '.webp': 'image/webp',
   '.svg': 'image/svg+xml',
-  '.ico': 'image/x-icon',
-  '.woff2': 'font/woff2',
-  '.woff': 'font/woff',
   '.ttf': 'font/ttf',
-  '.otf': 'font/otf',
-  '.bin': 'application/octet-stream',
-  '.wasm': 'application/wasm',
-  '.wav': 'audio/wav',
-  '.mp3': 'audio/mpeg',
-  '.ogg': 'audio/ogg',
   '.txt': 'text/plain; charset=utf-8',
 };
 
-createServer((request, response) => {
-  const url = new URL(request.url ?? '/', 'http://localhost');
-  let pathname: string;
-  try {
-    pathname = decodeURIComponent(url.pathname);
-  } catch {
-    response.writeHead(400).end('bad request');
+/** The port to listen on: PORT, else 8080. */
+const PORT = Number(process.env.PORT || 8080);
+
+/** The directory served: app/ beside this file. */
+const APP_DIR = join(dirname(fileURLToPath(import.meta.url)), 'app');
+
+/** Serve one request from app/, mapping / to index.html. */
+function serveFile(reqUrl: string, res: import('node:http').ServerResponse): void {
+  const path = decodeURIComponent(reqUrl.split('?')[0] || '/');
+  const target = resolve(APP_DIR, `.${sep}${normalize(path).replace(/^(\.\.[/\\])+/, '')}`);
+  const file = target.endsWith(sep) || path === '/' ? join(target, 'index.html') : target;
+  if (!file.startsWith(APP_DIR)) {
+    res.writeHead(403, { 'content-type': 'text/plain' });
+    res.end('403: outside app/');
     return;
   }
-  if (pathname.endsWith('/')) pathname += 'index.html';
-  const file = resolve(join(root, normalize(pathname)));
-  if (file !== root && !file.startsWith(root + sep)) {
-    response.writeHead(403).end('forbidden');
+  if (!existsSync(file) || !statSync(file).isFile()) {
+    res.writeHead(404, { 'content-type': 'text/plain' });
+    res.end('404: not found');
     return;
   }
-  let size: number;
-  try {
-    const stats = statSync(file);
-    if (!stats.isFile()) throw new Error('not a file');
-    size = stats.size;
-  } catch {
-    response.writeHead(404).end('not found');
-    return;
-  }
-  response.writeHead(200, {
-    'content-type': MIME[extname(file).toLowerCase()] ?? 'application/octet-stream',
-    'content-length': size,
-    'cache-control': 'no-store',
-  });
-  createReadStream(file).pipe(response);
-}).listen(port, '127.0.0.1', () => {
-  console.log(`app/ is on http://localhost:${port}`);
+  res.writeHead(200, { 'content-type': MIME_TYPES[extname(file)] || 'application/octet-stream' });
+  createReadStream(file).pipe(res);
+}
+
+const server = createServer((req, res) => {
+  serveFile(req.url || '/', res);
+});
+
+server.listen(PORT, () => {
+  console.log(`vice-cover-studio: serving app/ at http://localhost:${PORT}`);
 });
